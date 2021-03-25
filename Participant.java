@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
+import java.net.InetAddress;
 /**
  * This class creates a participant that connects or disconnects to a server and receives messages from the server.
  */
@@ -8,6 +9,8 @@ public class Participant {
 		
 	public static void main(String[] args) {
 		try {
+		InetAddress localAddress = InetAddress.getLocalHost();
+		String localIP = localAddress.toString();
 		File config = new File("conf.txt");
 		BufferedReader configReader = new BufferedReader(new FileReader(config));
 		String id;
@@ -46,29 +49,29 @@ public class Participant {
 				ThreadB mRun = new ThreadB(Integer.parseInt(secondHalf)); // send the port to be created on
 				Thread messageThread = new Thread(mRun);
 				messageThread.start();
-				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf);
+				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 			} else if (command.equals("reconnect") && !bCheck) {
 				ThreadB mRun = new ThreadB(Integer.parseInt(secondHalf)); // send the port to be created on
 				Thread messageThread = new Thread(mRun);
 				messageThread.start();
-				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf);
+				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				bCheck = true;
 			} else if (command.equals("deregister")) {
-				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf);
+				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				bCheck = false;
 			} else if (command.equals("disconnect")) {
-				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf);
+				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				bCheck = false;
 			} else if (command.equals("msend")) {
-				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf);
+				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 			} else if (command.equals("register") || command.equals("reconnect")) {
