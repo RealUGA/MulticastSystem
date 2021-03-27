@@ -11,7 +11,8 @@ public class Coordinator {
     
     public static Queue<Message> mQueue = new LinkedList<Message>();; // stores Messages in a queue
     public static ArrayList<User> userList = new ArrayList<User>();
-
+    public static int messageNumber = 0;
+    
     public static void main(String[] args) throws IOException {
 
         File config = new File("coordinator-conf.txt");
