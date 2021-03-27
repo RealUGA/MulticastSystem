@@ -1,0 +1,3 @@
+101
+log.txt
+odin.cs.uga.edu 19001

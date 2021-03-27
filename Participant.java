@@ -11,7 +11,7 @@ public class Participant {
 		try {
 		InetAddress localAddress = InetAddress.getLocalHost();
 		String localIP = localAddress.toString();
-		File config = new File("conf.txt");
+		File config = new File("participant-conf.txt");
 		BufferedReader configReader = new BufferedReader(new FileReader(config));
 		String id;
 		String logFile;
