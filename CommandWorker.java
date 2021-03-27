@@ -4,19 +4,24 @@ import java.net.*;
 
 public class CommandWorker implements Runnable{
     private Socket client;
-    private BufferedReader in;
-    private PrintWriter out;
-    private String command;
-    private String addendum;
+    private BufferedReader input;
+    private PrintWriter outforb;
+    private String Command;
+    private String Addendum;
+    private String OwnIP;
+    private String PORT;
+    private String IP;
+    private String ID;
+
 
     public CommandWorker(Socket clientSocket) throws IOException {
         this.client = clientSocket;
 
     }
 
-    public void register(addendum){
+    public void register(String id,String IP, int port){
 
-        User member = new User();
+        User member = new User(id,IP,port);
         userList.add(member);
         out.println("user added");
 
@@ -112,6 +117,30 @@ public class CommandWorker implements Runnable{
 
     @Override
     public void run() {
+        input = new BufferedReader(new InputStreamReader(client.getInputStream())); // receives client input
+        outforb = new PrintWriter(client.getOutputStream(),true); // used to output to client
+
+        ID = input[0];
+        OwnIP = input[1];
+        Command = input[2];
+        Addendum = input[3];
+
+        if Command == "register"{
+            register();
+        }
+        if Command == "deregister"{
+            deregister();
+        }
+        if Command == "disconnect"{
+            disconnect();
+        }
+        if Command == "reconnect"{
+            reconnect();
+        }
+        if Command == "msend"{
+            msend();
+        }
+
 
 
     }
