@@ -28,6 +28,10 @@ public class Coordinator {
 		configReader.close(); // all config information read
         
         ServerSocket coordSocket = new ServerSocket(port);
+
+        TimeKeeper tKeeper = new TimeKeeper(time);
+        Thread timeCheck = new Thread(tKeeper);
+        timeCheck.start();
         
         while(true) {
             System.out.println("Coordinator waiting for connection....");
@@ -41,5 +45,6 @@ public class Coordinator {
             Thread t = new Thread(cWorker);
             t.start();
         }
+
     }
 }
