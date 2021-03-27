@@ -15,6 +15,7 @@ public class ThreadB implements Runnable {
 	@Override
 	public void run() {
 		try {
+			System.out.println(PORT);
 			ServerSocket serverSocket1 = new ServerSocket(PORT);
 			while (true) {
 				System.out.println("Server waiting for connection....");
