@@ -1,11 +1,11 @@
 import java.io.*;
 import java.net.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public class TimeKeeper implements Runnable{
 
     private long timeCheck;
-    private LocalDateTime currentTime;
+    private Instant currentTime;
     
     public TimeKeeper(long timeCheck) {
         this.timeCheck = timeCheck;
@@ -15,8 +15,8 @@ public class TimeKeeper implements Runnable{
     @Override
     public void run() {
         while (true) {
-            currentTime = LocalDateTime.now();
-            if (Coordinator.mQueue.peek() != null && (currentTime - Coordinator.mQueue.getFirst().getMessageTime()) > timeCheck) {
+            currentTime = Instant.now();
+            if (Coordinator.mQueue.peek() != null && (currentTime.getEpochSecond() - Coordinator.mQueue.getFirst().getMessageTime()) > timeCheck) {
                 Coordinator.mQueue.removeFirst();
             }
         }

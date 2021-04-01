@@ -1,15 +1,15 @@
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public class Message() {
 
     private int id;
     private String contents;
-    private LocalDateTime time;
+    private Instant time;
     
     public Message(int id, String contents) {
         this.id = id;
         this.contents = contents;
-        time = LocalDateTime.now();
+        time = Instant.now();
     }
 
     public int getId() {
@@ -28,12 +28,12 @@ public class Message() {
         this.contents = contents;
     }
 
-    public LocalDateTime getMessageTime() {
-        return time;
+    public long getMessageTime() {
+        return time.getEpochSecond();
     }
     
     public void setMessageTime() {
-        time = LocalDateTime.now();
+        time = Instant.now();
     }
 
 
