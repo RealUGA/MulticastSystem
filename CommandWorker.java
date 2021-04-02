@@ -57,7 +57,7 @@ public class CommandWorker implements Runnable {
 
     }
 
-    public void reconnect(String ipofb, int portofb, String id) throws IOException {
+    public void reconnect(String id, String ipofb, int portofb) throws IOException {
 
         Socket threadb = new Socket(ipofb, portofb);
         PrintWriter outforb = new PrintWriter(threadb.getOutputStream(), true);
@@ -76,7 +76,7 @@ public class CommandWorker implements Runnable {
                     if (flag == true) {
                         outforb.println(Coordinator.mQueue.get(j).getContents());
                     }
-                    if (Coordinator.mQueue.get(j).getMessageID == Coordinator.userList.get(i).getLastMessage()) {
+                    if (Coordinator.mQueue.get(j).getId() == Coordinator.userList.get(i).getLastMessage()) {
                         flag = true;
                     }
                     if (flag == false) {
@@ -124,8 +124,8 @@ public class CommandWorker implements Runnable {
         try{
         input = new BufferedReader(new InputStreamReader(client.getInputStream()));// receives client input
         outfora = new PrintWriter(client.getOutputStream(), true); // used to output to client
-
         
+        String fullCommand;
         int index = 0;
         
         fullCommand = input.readLine();
