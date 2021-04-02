@@ -3,7 +3,7 @@ public class User {
 
     private String id;
     private String ip;
-    private int ip;
+    private int port;
     private boolean status;
     private int messageId;
 
@@ -12,7 +12,7 @@ public class User {
         this.ip = ip;
         this.port = port;
         status = true; // true for online status, false for offline status
-        messsageId = -1;
+        messageId = -1;
     }
 
     public String getId() {
