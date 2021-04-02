@@ -1,6 +1,6 @@
 import java.time.Instant;
 
-public class Message() {
+public class Message {
 
     private int id;
     private String contents;
