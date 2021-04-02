@@ -6,6 +6,7 @@ public class CommandWorker implements Runnable{
     private Socket client;
     private BufferedReader input;
     private PrintWriter outforb;
+    private PrintWriter outfora;
     private String Command;
     private String Addendum;
     private String OwnIP;
@@ -22,62 +23,62 @@ public class CommandWorker implements Runnable{
     public void register(String id,String IP, int port){
 
         User member = new User(id,IP,port);
-        userList.add(member);
-        out.println("user added");
+        Coordinator.userList.add(member);
+        outfora.println("User Added");
 
     }
-    public void deregister(addendum){
-        length = userList.size();
-        for(int i; i<=length, i++){
+    public void deregister(String id){
+        int length = Coordinator.userList.size();
+        for(int i = 0; i<=length; i++){
 
-            if(arraylist[i].userid = addendum){
-                arraylist.remove(int i);
+            if(Coordinator.userList.get(i).getId().equals(id)){
+                Coordinator.userList.remove(i);
             }
         }
-        out.println("user removed");
+        outfora.println("User Removed");
 
     }
-    public void disconnect(addendum){
-        length = userList.size();
+    public void disconnect(String id){
+        int length = Coordinator.userList.size();
 
-        for(int i; i<=length, i++){
+        for(int i = 0; i<=length; i++){
 
-            if(arrayList[i].userid = addendum){
-                arrayList[i].setStatus(false);
-                lastid = mQueue.getLast().getMessageID();
+            if(Coordinator.userList.get(i).getId().equals(id)){
+                Coordinator.userList.get(i).setStatus(false);
+                int last_message_id = Coordinator.mQueue.getLast().getId();
 
-                arrayList[i].setLastMessage(lastid);
+                Coordinator.userList.get(i).setLastMessage(last_message_id);
             }
         }
-        out.println("User Disconnected");
+        outfora.println("User Disconnected");
 
 
     }
-    public void reconnect(addendum){
+    public void reconnect(String ipofb, int portofb, String id) throws IOException{
 
         Socket threadb = new Socket(ipofb, portofb);
         PrintWriter outforb = new PrintWriter(threadb.getOutputStream(),true);
 
-        length = userList.size();
+        int length = Coordinator.userList.size();
 
-        for(int i; i<length, i++){
+        for(int i = 0; i<=length; i++){
 
-            if(arrayList[i].userid = userid){
-                arrayList[i].setStatus(true);
-                arrayList[i].setPort(portofb);
-                mqlength = mqueue.size();
-                flag = false;
+            if(Coordinator.userList.get(i).getId().equals(id)){
+                Coordinator.userList.get(i).setStatus(true);
+                Coordinator.userList.get(i).setPort(portofb);
+                int mqlength = Coordinator.mQueue.size();
+                boolean flag = false;
 
-                for(int j = 0, j<mqlength, j++){
+                for(int j = 0; j<mqlength; j++){
                     if(flag == true){
-                        outforb.println(mqueue[j].getMessageBody);
+                        outforb.println(Coordinator.mQueue.get(j).getContents());
                     }
-                    if(mqueue[j].getMessageID == arrayList[i].getLastMessage){
+                    if(Coordinator.mQueue.get(j).getMessageID == Coordinator.userList.get(i).getLastMessage()){
                         flag = true;
                     }
                     if(flag == false){
-                        for(int j = 0, j<mqlength, j++){
-                            outforb.println(mqueue[j].getMessageBody);
+                        for(int k = 0; k<mqlength; k++){
+                            outforb.println(Coordinator.mQueue.get(k).getContents());
 
                         }
                     }
@@ -92,24 +93,25 @@ public class CommandWorker implements Runnable{
         }
 
     }
-    public void msend(addendum){
-        messagetobesent = addendum;
-        length = userList.size();
+    public void msend(String messagetobesent) throws IOException{
+        int length = Coordinator.userList.size();
 
-        for(int i; i<length, i++){
-            if(arrayList[i].status == true){
-                port = arraylist[i].getport();
-                ip = arraylist[i].getip();
+        for(int i = 0; i<=length; i++){
+
+            if(Coordinator.userList.get(i).getStatus() == true){
+                int port = Coordinator.userList.get(i).getPort();
+                String ip = Coordinator.userList.get(i).getIpAddress();
 
                 Socket threadb = new Socket(ip, port);
                 PrintWriter outforb = new PrintWriter(threadb.getOutputStream(),true);
 
                 outforb.println(messagetobesent);
 
-                Message newmsg = new Message(messageNumber+1, messagetobesent);
-                messageNumber++;
-                Mqueue.add(newmsg);
+                Message newmsg = new Message(Coordinator.messageNumber+1, messagetobesent);
+                Coordinator.messageNumber++;
+                Coordinator.mQueue.add(newmsg);
                 threadb.close();
+
             }
         }
 
@@ -117,8 +119,8 @@ public class CommandWorker implements Runnable{
 
     @Override
     public void run() {
-        input = new BufferedReader(new InputStreamReader(client.getInputStream())); // receives client input
-        outforb = new PrintWriter(client.getOutputStream(),true); // used to output to client
+        input = new BufferedReader(new InputStreamReader(client.getInputStream()));// receives client input
+        outfora = new PrintWriter(client.getOutputStream(),true); // used to output to client
 
         ID = input[0];
         OwnIP = input[1];
