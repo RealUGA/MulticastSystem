@@ -29,7 +29,7 @@ public class ThreadA implements Runnable{
 		PrintWriter coordinatorOutput = new PrintWriter(coordinator.getOutputStream(),true);
 		BufferedReader in = new BufferedReader(new InputStreamReader(coordinator.getInputStream()));
 
-		coordinatorOutput.println(ID+OwnIP+Command+Addendum);
+		coordinatorOutput.println(ID+" "+OwnIP+" "+Command+" "+Addendum);
 		System.out.println(in.readLine());
 
 

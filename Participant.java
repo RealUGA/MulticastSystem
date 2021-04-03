@@ -33,8 +33,10 @@ public class Participant {
 		String fullCommand;
 		String command;
 		String secondHalf;
-		boolean bCheck = false;
+		boolean connCheck = false;
+		boolean regCheck = false;
 		while (true) {
+			System.out.print("input: ");
 			fullCommand = inputScanner.nextLine();
 			spaceIndex = fullCommand.indexOf(" ");
 			if (spaceIndex < 0) {
@@ -45,31 +47,33 @@ public class Participant {
 				secondHalf = fullCommand.substring(spaceIndex + 1);
 			}
 		
-			if (command.equals("register") && !bCheck) {
+			if (command.equals("register") && !regCheck) {
 				ThreadB mRun = new ThreadB(Integer.parseInt(secondHalf)); // send the port to be created on
 				Thread messageThread = new Thread(mRun);
 				messageThread.start();
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
-			} else if (command.equals("reconnect") && !bCheck) {
+				regCheck = true;
+				connCheck = true;
+			} else if (command.equals("reconnect") && !connCheck) {
 				ThreadB mRun = new ThreadB(Integer.parseInt(secondHalf)); // send the port to be created on
 				Thread messageThread = new Thread(mRun);
 				messageThread.start();
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
-				bCheck = true;
+				connCheck = true;
 			} else if (command.equals("deregister")) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
-				bCheck = false;
+				regCheck = false;
 			} else if (command.equals("disconnect")) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
-				bCheck = false;
+				connCheck = false;
 			} else if (command.equals("msend")) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
