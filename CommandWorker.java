@@ -137,7 +137,7 @@ public class CommandWorker implements Runnable {
         System.out.println("ID: " + ID);
         System.out.println("index: " + index);
 
-        fullCommand = fullCommand.substring(index + 1, length - 1);
+        fullCommand = fullCommand.substring(index + 1, length);
         length = fullCommand.length();
         index = fullCommand.indexOf(" ");
         OwnIP = fullCommand.substring(0,index);
@@ -145,7 +145,7 @@ public class CommandWorker implements Runnable {
         System.out.println("OwnIP: " + OwnIP);
         System.out.println("index: " + index);
         
-        fullCommand = fullCommand.substring(index + 1, length - 1);
+        fullCommand = fullCommand.substring(index + 1, length);
         length = fullCommand.length();
         index = fullCommand.indexOf(" ");
         Command = fullCommand.substring(0,index);
@@ -153,10 +153,10 @@ public class CommandWorker implements Runnable {
         System.out.println("Command: " + Command);
         System.out.println("index: " + index);
         
-        fullCommand = fullCommand.substring(index + 1, length - 1);
+        fullCommand = fullCommand.substring(index + 1, length);
         length = fullCommand.length();
         index = fullCommand.indexOf(" ");
-        Addendum = fullCommand.substring(0,index);
+        Addendum = fullCommand.substring(0,length);
         System.out.println("fullCommand: " + fullCommand);
         System.out.println("Addenddum: " + Addendum);
         System.out.println("index: " + index);
