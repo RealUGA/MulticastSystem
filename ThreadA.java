@@ -27,7 +27,11 @@ public class ThreadA implements Runnable{
 //			System.out.println(PORT+IP+Command+Addendum+ID+OwnIP);
 		Socket coordinator = new Socket(IP, PORT);
 		PrintWriter coordinatorOutput = new PrintWriter(coordinator.getOutputStream(),true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(coordinator.getInputStream()));
+
 		coordinatorOutput.println(ID+OwnIP+Command+Addendum);
+		System.out.println(in.readLine());
+
 
 		}catch (IOException e){
 		}
