@@ -25,7 +25,8 @@ public class ThreadB implements Runnable {
 				System.out.println("Server Connected");
 
 				FileWriter myWriter = new FileWriter("log.txt");
-				System.out.println(in.readLine());
+				//System.out.println(in.readLine());
+				//System.out.println("is this working?");
 				myWriter.write(in.readLine());
 
 				myWriter.close();
@@ -40,4 +41,3 @@ public class ThreadB implements Runnable {
 
 	}
 }
-

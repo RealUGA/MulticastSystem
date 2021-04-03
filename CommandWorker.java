@@ -48,9 +48,10 @@ public class CommandWorker implements Runnable {
 
             if (Coordinator.userList.get(i).getId().equals(id)) {
                 Coordinator.userList.get(i).setStatus(false);
-                int last_message_id = Coordinator.mQueue.getLast().getId();
-
-                Coordinator.userList.get(i).setLastMessage(last_message_id);
+                if (Coordinator.mQueue.getLast().getId() >= 0) {
+                    int last_message_id = Coordinator.mQueue.getLast().getId();
+                    Coordinator.userList.get(i).setLastMessage(last_message_id);
+                }
             }
         }
         outfora.println("User Disconnected");
@@ -145,6 +146,11 @@ public class CommandWorker implements Runnable {
         length = fullCommand.length();
         index = fullCommand.indexOf(" ");
         OwnIP = fullCommand.substring(0,index);
+        int slashIndex = 0;
+        int ipLength = 0;
+        ipLength = OwnIP.length();
+        slashIndex = OwnIP.indexOf("/");
+        OwnIP = OwnIP.substring(slashIndex + 1, ipLength); 
         System.out.println("fullCommand: " + fullCommand);
         System.out.println("OwnIP: " + OwnIP);
         System.out.println("index: " + index);
