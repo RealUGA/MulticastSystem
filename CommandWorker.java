@@ -133,18 +133,33 @@ public class CommandWorker implements Runnable {
         
         index = fullCommand.indexOf(" ");
         ID = fullCommand.substring(0,index);
+        System.out.println("fullCommand: " + fullCommand);
+        System.out.println("ID: " + ID);
+        System.out.println("index: " + index);
 
         fullCommand = fullCommand.substring(index + 1, length - 1);
+        length = fullCommand.length();
+        index = fullCommand.indexOf(" ");
         OwnIP = fullCommand.substring(0,index);
-
-        fullCommand = fullCommand.substring(index + 1, length - 1);
-        Command = fullCommand.substring(0,index);
-
-        fullCommand = fullCommand.substring(index + 1, length - 1);
-        Addendum = fullCommand.substring(0,index);
-            
-
+        System.out.println("fullCommand: " + fullCommand);
+        System.out.println("OwnIP: " + OwnIP);
+        System.out.println("index: " + index);
         
+        fullCommand = fullCommand.substring(index + 1, length - 1);
+        length = fullCommand.length();
+        index = fullCommand.indexOf(" ");
+        Command = fullCommand.substring(0,index);
+        System.out.println("fullCommand: " + fullCommand);
+        System.out.println("Command: " + Command);
+        System.out.println("index: " + index);
+        
+        fullCommand = fullCommand.substring(index + 1, length - 1);
+        length = fullCommand.length();
+        index = fullCommand.indexOf(" ");
+        Addendum = fullCommand.substring(0,index);
+        System.out.println("fullCommand: " + fullCommand);
+        System.out.println("Addenddum: " + Addendum);
+        System.out.println("index: " + index);
 
         if(Command.equals("register")) {
             register(ID,OwnIP,Integer.parseInt(Addendum));
