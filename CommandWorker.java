@@ -48,7 +48,7 @@ public class CommandWorker implements Runnable {
 
             if (Coordinator.userList.get(i).getId().equals(id)) {
                 Coordinator.userList.get(i).setStatus(false);
-                if (Coordinator.mQueue.getLast().getId() >= 0) {
+                if (Coordinator.mQueue.peek() != null) {
                     int last_message_id = Coordinator.mQueue.getLast().getId();
                     Coordinator.userList.get(i).setLastMessage(last_message_id);
                 }

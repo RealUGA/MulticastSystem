@@ -24,10 +24,11 @@ public class ThreadB implements Runnable {
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket1.getInputStream()));
 				System.out.println("Server Connected");
 
-				FileWriter myWriter = new FileWriter("log.txt");
+				FileWriter myWriter = new FileWriter("log.txt", true);
 				//System.out.println(in.readLine());
 				//System.out.println("is this working?");
 				myWriter.write(in.readLine());
+				myWriter.write("\n");
 
 				myWriter.close();
 				System.out.println("Message appended to the log.txt");
