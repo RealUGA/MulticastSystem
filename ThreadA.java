@@ -27,7 +27,7 @@ public class ThreadA implements Runnable{
 //			System.out.println(PORT+IP+Command+Addendum+ID+OwnIP);
 		Socket coordinator = new Socket(IP, PORT);
 		PrintWriter coordinatorOutput = new PrintWriter(coordinator.getOutputStream(),true);
-		coordinatorOutput.println(ID+OwnIP+Command+Addendum);
+		coordinatorOutput.println(ID+" "+OwnIP+" "+Command+" "+Addendum);
 
 		}catch (IOException e){
 		}
