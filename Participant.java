@@ -7,7 +7,10 @@ import java.net.InetSocketAddress;
  * This class creates a participant that connects or disconnects to a server and receives messages from the server.
  */
 public class Participant {
-		
+
+    /**
+     * Handles Participant commands and spawns off the appropriate threads.
+     */
 	public static void main(String[] args) {
 		try {
 		InetAddress localAddress = InetAddress.getLocalHost();
@@ -44,7 +47,7 @@ public class Participant {
 		slashIndex = localIP.indexOf("/");
 		localIP = localIP.substring(slashIndex + 1, ipLength);
 		InetSocketAddress test = new InetSocketAddress (localIP,port);
-		System.out.println(test.getPort());
+		//System.out.println(test.getPort());
 		
 		Scanner inputScanner = new Scanner(System.in);
 		String fullCommand;
@@ -74,7 +77,7 @@ public class Participant {
 				commandThread.start();
 				regCheck = true;
 				connCheck = true;
-			} else if (command.equals("reconnect") && !connCheck) {
+			} else if (command.equals("reconnect") && !connCheck && regCheck) {
 				ThreadB mRun = new ThreadB(Integer.parseInt(secondHalf)); // send the port to be created on
 				messageThread = new Thread(mRun);
 				messageThread.start();
@@ -87,14 +90,15 @@ public class Participant {
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				regCheck = false;
+                connCheck = false;
 				messageThread.interrupt();
-			} else if (command.equals("disconnect") && connCheck) {
+			} else if (command.equals("disconnect") && connCheck && regCheck) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				connCheck = false;
 				messageThread.interrupt();
-			} else if (command.equals("msend")) {
+			} else if (command.equals("msend") && connCheck && regCheck) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();

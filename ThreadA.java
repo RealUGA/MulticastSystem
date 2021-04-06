@@ -1,7 +1,9 @@
 import java.io.*;
 import java.net.*;
 
-
+/**
+ * This class connects to the Coordinator and sends Participant information.
+ */
 public class ThreadA implements Runnable{
 	private int PORT;
 	private String IP;
@@ -10,7 +12,9 @@ public class ThreadA implements Runnable{
 	private String ID;
 	private String OwnIP;
 
-
+    /**
+     * Assigns all required information that will be sent to Coordinator.
+     */
 	public ThreadA(int Port, String IP, String Command, String Addendum, String ID, String OwnIP) throws IOException {
 		this.PORT = Port;
 		this.IP = IP;
@@ -19,8 +23,11 @@ public class ThreadA implements Runnable{
 		this.Addendum = Addendum;
 		this.OwnIP = OwnIP;
 
-
 	}
+
+    /**
+     * Connects to server and sends information separated by spaces.
+     */
 	@Override
 	public void run() {
 		try{

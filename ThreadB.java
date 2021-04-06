@@ -6,26 +6,35 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * This class receives messages from the Coordinator and writes them to a log file.
+ */
 public class ThreadB implements Runnable {
 	private static int PORT ;
 
+    /**
+     * Assigns the port of ThreadB.
+     */
 	public ThreadB(int Port) throws IOException{
 		this.PORT = Port;
 	}
 
 	private ServerSocket serverSocket1;
-	
+
+    /**
+     * Handles the connections to ThreadB and writes incoming messages to log.txt.
+     */
 	@Override
 	public void run() {
 		try {
 			System.out.println(PORT);
 			serverSocket1 = new ServerSocket(PORT);
 			while (true) {
-				System.out.println("Server waiting for connection....");
+				//System.out.println("Server waiting for connection....");
 				Socket clientSocket1 = serverSocket1.accept();
-				System.out.println("connected");
+				//System.out.println("connected");
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket1.getInputStream()));
-				System.out.println("Server Connected");
+				//System.out.println("Server Connected");
 				
 				if (!in.ready()) {
 					Thread.sleep(100);

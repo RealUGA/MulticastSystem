@@ -7,11 +7,14 @@ import java.time.Instant;
 import java.util.Queue;
 import java.util.LinkedList;
 
+/**
+ * This class hosts connections from participants and allows for participants to send messages to all registered users in the system.
+ */
 public class Coordinator {
     
     public static LinkedList<Message> mQueue = new LinkedList<Message>();; // stores Messages in a queue
     public static ArrayList<User> userList = new ArrayList<User>();
-    public static int messageNumber = 0;
+    public static int messageNumber = 0; // used to set message ids. Updated incrementally every time a new message is created.
     
     public static void main(String[] args) throws IOException {
 
