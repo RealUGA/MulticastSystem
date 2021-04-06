@@ -2,6 +2,7 @@ import java.net.*;
 import java.io.*;
 import java.util.Scanner;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 /**
  * This class creates a participant that connects or disconnects to a server and receives messages from the server.
  */
@@ -11,6 +12,13 @@ public class Participant {
 		try {
 		InetAddress localAddress = InetAddress.getLocalHost();
 		String localIP = localAddress.toString();
+		/*String hostName = InetAddress.getLocalHost().getHostName();
+		InetAddress addrs[] = InetAddress.getAllByName(hostName);
+		for (int i = 0; i < addrs.length; i++) {
+			System.out.println(addrs[i]);
+		}
+		localAddress = addrs[1];
+		localIP = localAddress.toString();*/
 		File config = new File("participant-conf.txt");
 		BufferedReader configReader = new BufferedReader(new FileReader(config));
 		String id;
@@ -29,12 +37,22 @@ public class Participant {
 		port = Integer.parseInt(portString); // gets Coordinator Port
 		configReader.close(); // all config information read
 		
+		
+		int slashIndex = 0;
+		int ipLength = 0;
+		ipLength = localIP.length();
+		slashIndex = localIP.indexOf("/");
+		localIP = localIP.substring(slashIndex + 1, ipLength);
+		InetSocketAddress test = new InetSocketAddress (localIP,port);
+		System.out.println(test.getPort());
+		
 		Scanner inputScanner = new Scanner(System.in);
 		String fullCommand;
 		String command;
 		String secondHalf;
 		boolean connCheck = false;
 		boolean regCheck = false;
+		Thread messageThread = new Thread();
 		while (true) {
 			System.out.print("input: ");
 			fullCommand = inputScanner.nextLine();
@@ -49,7 +67,7 @@ public class Participant {
 		
 			if (command.equals("register") && !regCheck) {
 				ThreadB mRun = new ThreadB(Integer.parseInt(secondHalf)); // send the port to be created on
-				Thread messageThread = new Thread(mRun);
+				messageThread = new Thread(mRun);
 				messageThread.start();
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
@@ -58,22 +76,24 @@ public class Participant {
 				connCheck = true;
 			} else if (command.equals("reconnect") && !connCheck) {
 				ThreadB mRun = new ThreadB(Integer.parseInt(secondHalf)); // send the port to be created on
-				Thread messageThread = new Thread(mRun);
+				messageThread = new Thread(mRun);
 				messageThread.start();
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				connCheck = true;
-			} else if (command.equals("deregister")) {
+			} else if (command.equals("deregister") && regCheck && connCheck) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				regCheck = false;
-			} else if (command.equals("disconnect")) {
+				messageThread.interrupt();
+			} else if (command.equals("disconnect") && connCheck) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
 				connCheck = false;
+				messageThread.interrupt();
 			} else if (command.equals("msend")) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);

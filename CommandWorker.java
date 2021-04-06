@@ -32,7 +32,7 @@ public class CommandWorker implements Runnable {
         int length = Coordinator.userList.size();
         for (int i = 0; i <= length - 1; i++) {
             System.out.println(Coordinator.userList.get(i).getId() + " :this is coord id");
-            System.out.println(id + " this is id");
+            //System.out.println(id + " this is id");
             if (Coordinator.userList.get(i).getId().equals(id)) {
                 Coordinator.userList.remove(i);
             }
@@ -50,6 +50,7 @@ public class CommandWorker implements Runnable {
                 Coordinator.userList.get(i).setStatus(false);
                 if (Coordinator.mQueue.peek() != null) {
                     int last_message_id = Coordinator.mQueue.getLast().getId();
+                    //System.out.println("last message id: " + last_message_id);
                     Coordinator.userList.get(i).setLastMessage(last_message_id);
                 }
             }
@@ -65,36 +66,41 @@ public class CommandWorker implements Runnable {
         PrintWriter outforb = new PrintWriter(threadb.getOutputStream(), true);
 
         int length = Coordinator.userList.size();
-
+        
         for (int i = 0; i <= length - 1; i++) {
 
+            //System.out.println("Users last message was: " + Coordinator.userList.get(i).getLastMessage());
+            
             if (Coordinator.userList.get(i).getId().equals(id)) {
                 Coordinator.userList.get(i).setStatus(true);
                 Coordinator.userList.get(i).setPort(portofb);
                 int mqlength = Coordinator.mQueue.size();
+                System.out.println("MQUEUE SIZE: " + mqlength);
                 boolean flag = false;
-
-                for (int j = 0; j < mqlength - 1; j++) {
+                
+                for (int j = 0; j < mqlength; j++) {
                     if (flag == true) {
                         outforb.println(Coordinator.mQueue.get(j).getContents());
+                        System.out.println("trigger 1");
                     }
                     if (Coordinator.mQueue.get(j).getId() == Coordinator.userList.get(i).getLastMessage()) {
                         flag = true;
+                        System.out.println("trigger 2");
                     }
-                    if (flag == false) {
-                        for (int k = 0; k < mqlength - 1; k++) {
-                            outforb.println(Coordinator.mQueue.get(k).getContents());
-
-                        }
-                    }
-                    threadb.close();
-
-
                 }
+
+                if (flag == false) {
+                    for (int k = 0; k < mqlength; k++) {
+                        outforb.println(Coordinator.mQueue.get(k).getContents());
+                        System.out.println("trigger 3");
+                    }
+                }
+                threadb.close();
+
 
             }
         }
-
+        
     }
 
     public void msend(String messagetobesent) throws IOException {
@@ -104,8 +110,10 @@ public class CommandWorker implements Runnable {
 
             if (Coordinator.userList.get(i).getStatus() == true) {
                 int port = Coordinator.userList.get(i).getPort();
+                System.out.println("user port is: " + port);
                 String ip = Coordinator.userList.get(i).getIpAddress();
-
+                System.out.println("user ip is: " + ip);
+                
                 Socket threadb = new Socket(ip, port);
                 PrintWriter outforb = new PrintWriter(threadb.getOutputStream(), true);
 
@@ -150,7 +158,8 @@ public class CommandWorker implements Runnable {
         int ipLength = 0;
         ipLength = OwnIP.length();
         slashIndex = OwnIP.indexOf("/");
-        OwnIP = OwnIP.substring(slashIndex + 1, ipLength); 
+        OwnIP = OwnIP.substring(slashIndex + 1, ipLength);
+        //OwnIP = OwnIP.substring(0, slashIndex);
         System.out.println("fullCommand: " + fullCommand);
         System.out.println("OwnIP: " + OwnIP);
         System.out.println("index: " + index);
