@@ -98,12 +98,20 @@ public class Participant {
 				commandThread.start();
 				connCheck = false;
 				messageThread.interrupt();
-			} else if (command.equals("msend") && connCheck && regCheck) {
+			} else if (command.equals("msend") && connCheck) {
 				ThreadA cRun = new ThreadA(port, ipAddress, command, secondHalf, id, localIP);
 				Thread commandThread = new Thread(cRun);
 				commandThread.start();
-			} else if (command.equals("register") || command.equals("reconnect")) {
-				System.out.println("Already connected to system");
+			} else if (command.equals("register")) {
+				System.out.println("Already registered on system.");
+			} else if (command.equals("reconnect")) {
+				System.out.println("Either already connected to system or not registerd.");
+			} else if (command.equals("deregister")) {
+				System.out.println("Must be registered and connected to system to deregister.");
+			} else if (command.equals("disconnect")) {
+				System.out.println("Must be registered and connected ot system to disconnect.");
+			} else if (command.equals("msend")) {
+				System.out.println("Must be online to send messages.");
 			} else {
 				System.out.println("Invalid command");
 			}

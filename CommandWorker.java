@@ -164,13 +164,13 @@ public class CommandWorker implements Runnable {
             fullCommand = input.readLine();
             int length = fullCommand.length();
             index = fullCommand.indexOf(" ");
-            System.out.println("fullCommand: " + fullCommand);
-            System.out.println("index: " + index);
+            //System.out.println("fullCommand: " + fullCommand);
+            //System.out.println("index: " + index);
             
             ID = fullCommand.substring(0,index);
-            System.out.println("fullCommand: " + fullCommand);
+            /*System.out.println("fullCommand: " + fullCommand);
             System.out.println("ID: " + ID);
-            System.out.println("index: " + index);
+            System.out.println("index: " + index);*/
             
             fullCommand = fullCommand.substring(index + 1, length);
             length = fullCommand.length();
